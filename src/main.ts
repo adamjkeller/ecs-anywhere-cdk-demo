@@ -17,6 +17,7 @@ import * as iam from "@aws-cdk/aws-iam";
 export class ECSAnywhereDemo extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
+    
     const vpc = new ec2.Vpc(this, "DemoVPC");
 
     const execKmsKey = new kms.Key(this, "ExecKMS");
@@ -103,12 +104,6 @@ export class ECSAnywhereDemo extends Stack {
         "sudo bash /tmp/ecs-anywhere-install.sh --region $REGION --cluster $CLUSTER_NAME --activation-id $ACTIVATION_ID --activation-code $ACTIVATION_CODE",
       exportName: "Step3",
     });
-    // git clone git@github.com:jasonumiker/ecsanywhere-dind.git
-    // `aws ssm create-activation --iam-role ${register_instance_role.roleName} | tee ssm-activation.json`
-    // ACTIVATION_ID=$(cat ssm-activation.json| jq -r .ActivationId)
-    // ACTIVATION_CODE=$(cat ssm-activation.json| jq -r .ActivationCode)
-    // cd ecsanywhere-dind && docker build -t ecsanywhere-dind .
-    // docker run -d --privileged --rm -e ACTIVATION_ID=$ACTIVATION_ID -e ACTIVATION_CODE=$ACTIVATION_CODE -e CLUSTER_NAME=EcsAnywhereCDKDemo --name ecsanywhere -p 8080-8090:8080-8090 ecsanywhere-dind:latest
   }
 }
 
